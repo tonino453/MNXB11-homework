@@ -1,0 +1,302 @@
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ cat ./run_in_container_calculatePI.sh
+[?2004l#!/bin/sh
+# This script runs the calculatePI.sh script using the container `mnxb11_al9.latest.sif` with minimum required parameters
+# -B mounts the project directory inside the container so that is visible also inside the container
+apptainer run -B /projects:/projects /projects/hep/fs11/share/mnxb11/containers/mnxb11_al9.latest.sif ./calculatePI_setup.sh
+
+
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ cat calculatepi.sbatch-tonino.sh[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kcat calculatepi.sbatch-tonino.sh
+[?2004l#!/bin/bash
+
+# Job name shown in squeue
+#SBATCH -J "MNXB11 Pi tonino"
+# Project account to charge
+#SBATCH -A hep2023-1-6
+# Partition (group of nodes) to run on
+#SBATCH -p hep
+# Run on one node, as one task, using one CPU core
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH --cpus-per-task=1
+# Wall time limit: profiled 7:09 on the frontend, plus ~25% margin
+#SBATCH --time=00:09:00
+# Memory limit: profiled max RSS ~25.3 GB, plus ~10% margin
+#SBATCH --mem=28G
+# Output and error files, %j is replaced by the job ID
+#SBATCH -o calculatePI_%j.out
+#SBATCH -e calculatePI_%j.err
+
+# Launch the calculatePI application inside the container
+./run_in_container_calculatePI.sh
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ cat calculatepi.sbatch-tonino.sh./run_in_container_calculatePI.sh[5Pcalculatepi.sbatch-tonino.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K^C[?2004l[?2004h[?2004l
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ sbatch calculatepi.sbatch-tonino.sh
+[?2004lSubmitted batch job 3744522
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ squeue -u tonino[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Ksqueue -u tonino
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3744522       hep MNXB11 P   tonino  R       0:30      1 cx04
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ scontrol show job 3744522
+[?2004lJobId=3744522 JobName=MNXB11 Pi tonino
+   UserId=tonino(400214) GroupId=tonino(400214) MCS_label=N/A
+   Priority=64043 Nice=0 Account=hep2023-1-6 QOS=normal
+   JobState=RUNNING Reason=None Dependency=(null)
+   Requeue=1 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+   RunTime=00:01:23 TimeLimit=00:09:00 TimeMin=N/A
+   SubmitTime=2026-09-28T17:22:08 EligibleTime=2026-09-28T17:22:08
+   AccrueTime=2026-09-28T17:22:08
+   StartTime=2026-09-28T17:22:09 EndTime=2026-09-28T17:31:09 Deadline=N/A
+   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-09-28T17:22:09 Scheduler=Main
+   Partition=hep AllocNode:Sid=cosmos-pkf:3030701
+   ReqNodeList=(null) ExcNodeList=(null)
+   NodeList=cx04
+   BatchHost=cx04
+   NumNodes=1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+   ReqTRES=cpu=1,mem=28G,node=1,billing=1
+   AllocTRES=cpu=1,mem=28G,node=1,billing=1
+   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*
+   MinCPUsNode=1 MinMemoryNode=28G MinTmpDiskNode=0
+   Features=(null) DelayBoot=00:00:00
+   OverSubscribe=OK Contiguous=0 Licenses=(null) Network=(null)
+   Command=/home/tonino/git/MNXB11-homework/homework3/calculatePI/scripts/calculatepi.sbatch-tonino.sh
+   WorkDir=/home/tonino/git/MNXB11-homework/homework3/calculatePI/scripts
+   StdErr=/home/tonino/git/MNXB11-homework/homework3/calculatePI/scripts/calculatePI_3744522.err
+   StdIn=/dev/null
+   StdOut=/home/tonino/git/MNXB11-homework/homework3/calculatePI/scripts/calculatePI_3744522.out
+   Power=
+   TresPerTask=cpu:1
+   
+
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ tail -n 3 calculatePI_3744522.out
+[?2004lProcessing datapoint: 299998000 of 300000000
+Processing datapoint: 299999000 of 300000000
+Graph creation in progress...
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ sacct -j 3744522 --format=JobID,JobName,State,Elapsed,ReqMem[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Ktail -n 3 calculatePI_3744522.out[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[8Pscontrol show job 3744522[9Pqueue -u toninobatch calculatepi.sbatch-tonino.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pcat[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./run_in_container_calculatePI.sh[5Pcalculatepi.sbatch-tonino.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3@sbatch[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[19Pqueue -u toninocontrol show job 3744522tail -n 3 calculatePI_3744522.out[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ktail -n 3 calculatePI_3744522.out[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[8Pscontrol show job 3744522[9Pqueue -u toninobatch calculatepi.sbatch-tonino.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[19Pqueue -u toninocontrol show job 3744522tail -n 3 calculatePI_3744522.out[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ [K[tonino@cosmos-pkf scripts]$ sacct -j 3744522 --format=JobID,JobName,State,Elapsed,ReqMem
+[?2004lJobID           JobName      State    Elapsed     ReqMem 
+------------ ---------- ---------- ---------- ---------- 
+3744522      MNXB11 Pi+    RUNNING   00:03:24        28G 
+3744522.bat+      batch    RUNNING   00:03:24            
+3744522.ext+     extern    RUNNING   00:03:24            
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ sbatch -J WASTED calculatepi.sbatch-tonino.sh
+[?2004lSubmitted batch job 3744604
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ sbatch -J WASTED calculatepi.sbatch-tonino.sh
+[?2004lSubmitted batch job 3744605
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ sbatch -J WASTED calculatepi.sbatch-tonino.sh
+[?2004lSubmitted batch job 3744606
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ squeue -u toninoscancel 3744604
+[?2004lsqueue: error: Invalid user: toninoscancel
+
+squeue: error: Unrecognized option: 3744604
+Usage: squeue [-A account] [--clusters names] [-i seconds] [--job jobid]
+              [-n name] [-o format] [-p partitions] [--qos qos]
+              [--reservation reservation] [--sort fields] [--start]
+              [--step step_id] [-t states] [-u user_name] [--usage]
+              [-L licenses] [-w nodes] [--federation] [--local] [--sibling]
+              [--json=data_parser] [--yaml=data_parser]
+              [-ahjlrsv]
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ scancel 3744605
+[?2004lktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ squeue -u tonino[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kscancel 3744604
+[?2004lktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ squeue -u tonino
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3744606       hep   WASTED   tonino  R       1:40      1 cx04
+           3744522       hep MNXB11 P   tonino  R       5:05      1 cx04
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ scancel -n WASTED
+[?2004lktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ squeue -u tonino
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3744606       hep   WASTED   tonino CG       2:30      1 cx04
+           3744522       hep MNXB11 P   tonino  R       5:55      1 cx04
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ sacct -u tonino --starttime today --format=JobID,JobName,State,Elapsed
+[?2004lJobID           JobName      State    Elapsed 
+------------ ---------- ---------- ---------- 
+3743952      Balazs fi+    TIMEOUT   00:01:25 
+3743952.bat+      batch  CANCELLED   00:01:25 
+3743952.ext+     extern  COMPLETED   00:01:25 
+3744134          WASTED CANCELLED+   00:00:19 
+3744134.bat+      batch  CANCELLED   00:00:19 
+3744134.ext+     extern  COMPLETED   00:00:19 
+3744135          WASTED CANCELLED+   00:00:19 
+3744135.bat+      batch  CANCELLED   00:00:19 
+3744135.ext+     extern  COMPLETED   00:00:19 
+3744136          WASTED CANCELLED+   00:00:16 
+3744136.bat+      batch  CANCELLED   00:00:16 
+3744136.ext+     extern  COMPLETED   00:00:16 
+3744140          WASTED    TIMEOUT   00:01:06 
+3744140.bat+      batch  CANCELLED   00:01:06 
+3744140.ext+     extern  COMPLETED   00:01:06 
+3744141          WASTED    TIMEOUT   00:01:06 
+3744141.bat+      batch  CANCELLED   00:01:06 
+3744141.ext+     extern  COMPLETED   00:01:06 
+3744144       multi job    TIMEOUT   00:01:03 
+3744144.bat+      batch  CANCELLED   00:01:04 
+3744144.ext+     extern  COMPLETED   00:01:03 
+3744144.0      hostname  COMPLETED   00:00:00 
+3744145       multi job    TIMEOUT   00:01:03 
+3744145.bat+      batch  CANCELLED   00:01:04 
+3744145.ext+     extern  COMPLETED   00:01:03 
+3744145.0      hostname  COMPLETED   00:00:00 
+3744211        taskfarm  COMPLETED   00:00:45 
+3744211.bat+      batch  COMPLETED   00:00:45 
+3744211.ext+     extern  COMPLETED   00:00:45 
+3744211.0          time  COMPLETED   00:00:05 
+3744211.1          time  COMPLETED   00:00:05 
+3744211.2          time  COMPLETED   00:00:05 
+3744211.3          time  COMPLETED   00:00:05 
+3744211.4          time  COMPLETED   00:00:05 
+3744211.5          time  COMPLETED   00:00:05 
+3744211.6          time  COMPLETED   00:00:05 
+3744211.7          time  COMPLETED   00:00:05 
+3744211.8          time  COMPLETED   00:00:05 
+3744211.9          time  COMPLETED   00:00:05 
+3744211.10         time  COMPLETED   00:00:05 
+3744211.11         time  COMPLETED   00:00:05 
+3744211.12         time  COMPLETED   00:00:05 
+3744211.13         time  COMPLETED   00:00:05 
+3744211.14         time  COMPLETED   00:00:05 
+3744211.15         time  COMPLETED   00:00:05 
+3744211.16         time  COMPLETED   00:00:05 
+3744211.17         time  COMPLETED   00:00:05 
+3744211.18         time  COMPLETED   00:00:05 
+3744211.19         time  COMPLETED   00:00:05 
+3744211.20         time  COMPLETED   00:00:05 
+3744211.21         time  COMPLETED   00:00:05 
+3744211.22         time  COMPLETED   00:00:05 
+3744211.23         time  COMPLETED   00:00:06 
+3744211.24         time  COMPLETED   00:00:05 
+3744211.25         time  COMPLETED   00:00:05 
+3744211.26         time  COMPLETED   00:00:05 
+3744211.27         time  COMPLETED   00:00:05 
+3744211.28         time  COMPLETED   00:00:05 
+3744211.29         time  COMPLETED   00:00:05 
+3744211.30         time  COMPLETED   00:00:05 
+3744211.31         time  COMPLETED   00:00:06 
+3744211.32         time  COMPLETED   00:00:05 
+3744211.33         time  COMPLETED   00:00:05 
+3744211.34         time  COMPLETED   00:00:05 
+3744211.35         time  COMPLETED   00:00:06 
+3744211.36         time  COMPLETED   00:00:05 
+3744211.37         time  COMPLETED   00:00:06 
+3744211.38         time  COMPLETED   00:00:05 
+3744211.39         time  COMPLETED   00:00:06 
+3744212        taskfarm  COMPLETED   00:03:23 
+3744212.bat+      batch  COMPLETED   00:03:23 
+3744212.ext+     extern  COMPLETED   00:03:23 
+3744212.0          time  COMPLETED   00:00:05 
+3744212.1          time  COMPLETED   00:00:05 
+3744212.2          time  COMPLETED   00:00:05 
+3744212.3          time  COMPLETED   00:00:05 
+3744212.4          time  COMPLETED   00:00:05 
+3744212.5          time  COMPLETED   00:00:05 
+3744212.6          time  COMPLETED   00:00:05 
+3744212.7          time  COMPLETED   00:00:06 
+3744212.8          time  COMPLETED   00:00:05 
+3744212.9          time  COMPLETED   00:00:05 
+3744212.10         time  COMPLETED   00:00:05 
+3744212.11         time  COMPLETED   00:00:05 
+3744212.12         time  COMPLETED   00:00:05 
+3744212.13         time  COMPLETED   00:00:05 
+3744212.14         time  COMPLETED   00:00:05 
+3744212.15         time  COMPLETED   00:00:05 
+3744212.16         time  COMPLETED   00:00:05 
+3744212.17         time  COMPLETED   00:00:05 
+3744212.18         time  COMPLETED   00:00:06 
+3744212.19         time  COMPLETED   00:00:05 
+3744212.20         time  COMPLETED   00:00:05 
+3744212.21         time  COMPLETED   00:00:05 
+3744212.22         time  COMPLETED   00:00:05 
+3744212.23         time  COMPLETED   00:00:05 
+3744212.24         time  COMPLETED   00:00:05 
+3744212.25         time  COMPLETED   00:00:05 
+3744212.26         time  COMPLETED   00:00:05 
+3744212.27         time  COMPLETED   00:00:05 
+3744212.28         time  COMPLETED   00:00:05 
+3744212.29         time  COMPLETED   00:00:05 
+3744212.30         time  COMPLETED   00:00:06 
+3744212.31         time  COMPLETED   00:00:05 
+3744212.32         time  COMPLETED   00:00:05 
+3744212.33         time  COMPLETED   00:00:05 
+3744212.34         time  COMPLETED   00:00:05 
+3744212.35         time  COMPLETED   00:00:05 
+3744212.36         time  COMPLETED   00:00:05 
+3744212.37         time  COMPLETED   00:00:05 
+3744212.38         time  COMPLETED   00:00:05 
+3744212.39         time  COMPLETED   00:00:05 
+3744213        taskfarm  COMPLETED   00:00:44 
+3744213.bat+      batch  COMPLETED   00:00:44 
+3744213.ext+     extern  COMPLETED   00:00:44 
+3744213.0          time  COMPLETED   00:00:05 
+3744213.1          time  COMPLETED   00:00:05 
+3744213.2          time  COMPLETED   00:00:05 
+3744213.3          time  COMPLETED   00:00:08 
+3744213.4          time  COMPLETED   00:00:06 
+3744213.5          time  COMPLETED   00:00:05 
+3744213.6          time  COMPLETED   00:00:05 
+3744213.7          time  COMPLETED   00:00:05 
+3744213.8          time  COMPLETED   00:00:05 
+3744213.9          time  COMPLETED   00:00:05 
+3744213.10         time  COMPLETED   00:00:05 
+3744213.11         time  COMPLETED   00:00:05 
+3744213.12         time  COMPLETED   00:00:05 
+3744213.13         time  COMPLETED   00:00:05 
+3744213.14         time  COMPLETED   00:00:05 
+3744213.15         time  COMPLETED   00:00:05 
+3744213.16         time  COMPLETED   00:00:05 
+3744213.17         time  COMPLETED   00:00:05 
+3744213.18         time  COMPLETED   00:00:05 
+3744213.19         time  COMPLETED   00:00:05 
+3744213.20         time  COMPLETED   00:00:05 
+3744213.21         time  COMPLETED   00:00:05 
+3744213.22         time  COMPLETED   00:00:05 
+3744213.23         time  COMPLETED   00:00:05 
+3744213.24         time  COMPLETED   00:00:05 
+3744213.25         time  COMPLETED   00:00:05 
+3744213.26         time  COMPLETED   00:00:05 
+3744213.27         time  COMPLETED   00:00:05 
+3744213.28         time  COMPLETED   00:00:05 
+3744213.29         time  COMPLETED   00:00:05 
+3744213.30         time  COMPLETED   00:00:05 
+3744213.31         time  COMPLETED   00:00:05 
+3744213.32         time  COMPLETED   00:00:05 
+3744213.33         time  COMPLETED   00:00:05 
+3744213.34         time  COMPLETED   00:00:05 
+3744213.35         time  COMPLETED   00:00:05 
+3744213.36         time  COMPLETED   00:00:05 
+3744213.37         time  COMPLETED   00:00:05 
+3744213.38         time  COMPLETED   00:00:05 
+3744213.39         time  COMPLETED   00:00:05 
+3744281      MNXB11 Pi+ OUT_OF_ME+   00:00:54 
+3744281.bat+      batch OUT_OF_ME+   00:00:54 
+3744281.ext+     extern  COMPLETED   00:00:54 
+3744420      MNXB11 Pi+  COMPLETED   00:06:43 
+3744420.bat+      batch  COMPLETED   00:06:43 
+3744420.ext+     extern  COMPLETED   00:06:43 
+3744522      MNXB11 Pi+    RUNNING   00:05:57 
+3744522.bat+      batch    RUNNING   00:05:57 
+3744522.ext+     extern    RUNNING   00:05:57 
+3744604          WASTED CANCELLED+   00:01:31 
+3744604.bat+      batch  CANCELLED   00:01:32 
+3744604.ext+     extern  COMPLETED   00:01:31 
+3744605          WASTED CANCELLED+   00:00:42 
+3744605.bat+      batch  CANCELLED   00:00:43 
+3744605.ext+     extern  COMPLETED   00:00:42 
+3744606          WASTED CANCELLED+   00:02:30 
+3744606.bat+      batch  CANCELLED   00:02:31 
+3744606.ext+     extern  COMPLETED   00:02:30 
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ sacct -u tonino --starttime today --format=JobID,JobName,State,Elapsed[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cqueue -u tonino[Kcancel -n WASTED[1Pqueue -u tonino[1Pcancel 37446045queue -u toninoscancel 3744604batch -J WASTED calculatepi.sbatch-tonino.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cacct -j 3744522 --format=JobID,JobName,State,Elapsed,ReqMem[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[27Ptail -n 3 calculatePI_3744522.out[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[8Pscontrol show job 3744522[9Pqueue -u toninobatch calculatepi.sbatch-tonino.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pcat[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./run_in_container_calculatePI.sh[5Pcalculatepi.sbatch-tonino.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3@sbatch[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[19Pqueue -u toninocontrol show job 3744522[9Pqueue -u toninobatch calculatepi.sbatch-tonino.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3Pcat[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./run_in_container_calculatePI.sh[5Pcalculatepi.sbatch-tonino.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[3@sbatch[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[19Pqueue -u toninocontrol show job 3744522tail -n 3 calculatePI_3744522.out[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Csacct -j 3744522 --format=JobID,JobName,State,Elapsed,ReqMem[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[15Pbatch -J WASTED calculatepi.sbatch-tonino.sh[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[14Pqueue -u toninoscancel 3744604[16Pcancel 37446054queue -u toninocancel -n WASTED[1Pqueue -u toninoacct -u tonino --starttime today --format=JobID,JobName,State,Elapsed[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ksacct -u tonino --starttime today --format=JobID,JobName,State,Elapsed[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cqueue -u tonino[Kcancel -n WASTED[1Pqueue -u toninocancel -n WASTED[1Pqueue -u toninoacct -u tonino --starttime today --format=JobID,JobName,State,Elapsed[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ksacct -u tonino --starttime today --format=JobID,JobName,State,Elapsed[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cqueue -u tonino[Kcancel -n WASTED[1Pqueue -u toninocancel -n WASTED[1Pqueue -u toninoacct -u tonino --starttime today --format=JobID,JobName,State,Elapsed[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ksqueue -u tonino
+[?2004l             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ sacct -j 3744522 --format=JobID,JobName,State,Elapsed,ReqMem
+[?2004lJobID           JobName      State    Elapsed     ReqMem 
+------------ ---------- ---------- ---------- ---------- 
+3744522      MNXB11 Pi+  COMPLETED   00:06:48        28G 
+3744522.bat+      batch  COMPLETED   00:06:48            
+3744522.ext+     extern  COMPLETED   00:06:48            
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ tail -n 3 calculatePI_3744522.out
+[?2004lProcessing datapoint: 299999000 of 300000000
+Graph creation in progress...
+Estimated pi = 3.14173
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ ls -lt ~/tmp.calculatePI/
+[?2004ltotal 3
+drwxr-xr-x 2 tonino tonino 4096 Sep 28 17:28 [0m[01;34m1790608929[0m
+drwxr-xr-x 2 tonino tonino 4096 Sep 28 17:25 [01;34m1790609134[0m
+drwxr-xr-x 2 tonino tonino 4096 Sep 28 16:59 [01;34m1790607144[0m
+drwxr-xr-x 2 tonino tonino 4096 Sep 28 16:44 [01;34m1790606226[0m
+drwxr-xr-x 2 tonino tonino 4096 Sep 28 16:41 [01;34m1790606490[0m
+ktonino@cosmos-pkf:~/git/MNXB11-homework/homework3/calculatePI/scripts\[?2004h[tonino@cosmos-pkf scripts]$ exit
+[?2004lexit
