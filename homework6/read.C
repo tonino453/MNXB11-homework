@@ -37,6 +37,7 @@ void read() {
   std::cout << "mean vy = " << hVel->GetMean(2) << ", std dev vy = " << hVel->GetStdDev(2) << std::endl;
 
   gStyle->SetStatX(0.85);
+  gStyle->SetStatY(0.89);
   TCanvas *c1 = new TCanvas("c1", "velocity components", 800, 700);
   c1->SetLeftMargin(0.13);
   c1->SetRightMargin(0.15);
