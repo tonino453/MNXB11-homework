@@ -3,6 +3,7 @@
 #include <TTree.h>
 #include <TH2D.h>
 #include <TCanvas.h>
+#include <TStyle.h>
 #include <iostream>
 
 void read() {
@@ -35,7 +36,9 @@ void read() {
   std::cout << "mean vx = " << hVel->GetMean(1) << ", std dev vx = " << hVel->GetStdDev(1) << std::endl;
   std::cout << "mean vy = " << hVel->GetMean(2) << ", std dev vy = " << hVel->GetStdDev(2) << std::endl;
 
+  gStyle->SetStatX(0.85);
   TCanvas *c1 = new TCanvas("c1", "velocity components", 800, 700);
+  c1->SetLeftMargin(0.13);
   c1->SetRightMargin(0.15);
   hVel->Draw("COLZ");
   c1->SaveAs("velocity_components.png");
@@ -43,6 +46,7 @@ void read() {
 
   // 3.2
   TCanvas *c2 = new TCanvas("c2", "horizontal speed vs vz", 800, 700);
+  c2->SetLeftMargin(0.13);
   tree->SetMarkerStyle(7);
   Long64_t nSelected = tree->Draw(
       "sqrt(object.fVx*object.fVx + object.fVy*object.fVy):object.fVz",
